@@ -20,20 +20,21 @@ public class JDBC_Panel extends JPanel {
 	private JButton verbindenB = new JButton("Verbinden"), befehlB = new JButton("Go!"); 
 	private JButton	trennenB = new JButton("Trennen");
 	
-	private JDBC_Connection con = new JDBC_Connection();
+	private JDBC_Connection con = new JDBC_Connection(this);
 	
 	private JLabel serverL = new JLabel();
 	private JLabel datenbankL = new JLabel();
 	private JLabel userL = new JLabel();
 	private JLabel passL = new JLabel();
 	private JLabel befehlL = new JLabel();
+	private JLabel erfolgL = new JLabel();
 	
 	public JDBC_Panel(String server, String user, String pass, String datenbank){
 	
 		this.setLayout(new BorderLayout());
 		
 		JPanel panel, buttonsP;
-		panel = new JPanel(new GridLayout(10,1));
+		panel = new JPanel(new GridLayout(11,1));
 		buttonsP  = new JPanel(new FlowLayout());
 		
 		serverL.setText("Server:");
@@ -41,6 +42,8 @@ public class JDBC_Panel extends JPanel {
 		userL.setText("User:");
 		passL.setText("Passwort:");
 		befehlL.setText("SQL-Befehl:");
+		erfolgL.setText("Erfolgreich verbunden!");
+		erfolgL.setVisible(false);
 		
 		serverT.setText(server);
 		datenbankT.setText(datenbank);
@@ -51,6 +54,7 @@ public class JDBC_Panel extends JPanel {
 		
 		verbindenB.addActionListener(al);
 		befehlB.addActionListener(al);
+		trennenB.addActionListener(al);
 		
 		panel.add(serverL);
 		panel.add(serverT);
@@ -62,6 +66,7 @@ public class JDBC_Panel extends JPanel {
 		panel.add(passT);
 		panel.add(befehlL);
 		panel.add(befehlT);
+		panel.add(erfolgL);
 		
 		buttonsP.add(verbindenB);
 		buttonsP.add(befehlB);
@@ -83,54 +88,40 @@ public class JDBC_Panel extends JPanel {
 			
 			if(a.getSource() == verbindenB){
 				con.connectTo(serverT.getText(), userT.getText(), String.valueOf(passT.getPassword()));
+				repaint();
 			}
 			
 			if(a.getSource() == trennenB){
 				con.trennen();
+				repaint();
 			}
 		}
 	}
 	
 	
-	public String getServerT() {
-		return serverT.getText();
-	}
 
 	public void setServerT(String serverT) {
 		this.serverT.setText(serverT);
-	}
-
-	public String getDatenbankT() {
-		return datenbankT.getText();
 	}
 
 	public void setDatenbankT(String datenbankT) {
 		this.datenbankT.setText(datenbankT);
 	}
 
-	public String getUserT() {
-		return userT.getText();
-	}
-
 	public void setUserT(String userT) {
 		this.userT.setText(userT);
-	}
-
-	public char[] getPassT() {
-		return passT.getPassword();
 	}
 
 	public void setPassT(String passT) {
 		this.passT.setText(passT);
 	}
 
-	public String getBefehlT() {
-		return befehlT.getText();
-	}
-
 	public void setBefehlT(String befehlT) {
 		this.befehlT.setText(befehlT);
 	}
 	
+	public void setErfolgL(boolean stat) {
+		this.erfolgL.setVisible(stat);
+	}
 	
 }

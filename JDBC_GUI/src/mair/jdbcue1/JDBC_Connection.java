@@ -16,11 +16,14 @@ public class JDBC_Connection {
 	private MysqlDataSource ds;
 	private Connection con;
 	private Statement st;
-	private ResultSet rs;
-
-	public JDBC_Connection(){
+	private ResultSet rs = null;
+	
+	private JDBC_Panel pan;
+	
+	public JDBC_Connection(JDBC_Panel p){
 		connected = false;
 		ds = new MysqlDataSource();
+		pan = p;
 	}
 
 	public void connectTo(String server, String user, String pass){
@@ -33,6 +36,7 @@ public class JDBC_Connection {
 				con = ds.getConnection();
 				st = con.createStatement();
 				connected = true;
+				pan.setErfolgL(true);
 			}	
 			else{
 				rs.close();
@@ -44,6 +48,7 @@ public class JDBC_Connection {
 				ds.setPassword(pass);
 				con = ds.getConnection();
 				st = con.createStatement();
+				pan.setErfolgL(true);
 			}
 		}
 
@@ -73,9 +78,12 @@ public class JDBC_Connection {
 	public void trennen(){
 		try{
 			if(connected == true){
-				rs.close();
+				if(rs != null)
+					rs.close();
 				st.close();
 				con.close();
+				connected = false;
+				pan.setErfolgL(false);
 			}
 			else
 				throw new IllegalArgumentException("Fehler: Keine Aktive verbindung!");
