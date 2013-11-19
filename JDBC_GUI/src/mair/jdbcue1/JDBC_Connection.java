@@ -11,25 +11,25 @@ import java.sql.Connection;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class JDBC_Connection {
-	
+
 	private boolean connected;
 	private MysqlDataSource ds;
 	private Connection con;
 	private Statement st;
 	private ResultSet rs;
-	
+
 	public JDBC_Connection(){
 		connected = false;
 		ds = new MysqlDataSource();
 	}
-	
+
 	public void connectTo(String server, String user, String pass){
 		try {
 			if(connected == false){
 				ds.setServerName(server);
 				ds.setUser(user);
 				ds.setPassword(pass);
-				
+
 				con = ds.getConnection();
 				st = con.createStatement();
 				connected = true;
@@ -38,7 +38,7 @@ public class JDBC_Connection {
 				rs.close();
 				st.close();
 				con.close();
-				
+
 				ds.setServerName(server);
 				ds.setUser(user);
 				ds.setPassword(pass);
@@ -46,17 +46,17 @@ public class JDBC_Connection {
 				st = con.createStatement();
 			}
 		}
-		
+
 		catch (SQLException sqle) {
 			JOptionPane.showMessageDialog(null, "Error: "+sqle.getMessage());
 		}
 	}
-	
+
 	public ResultSet befehlAbfrage(String befehl){
 		try{
 			if(connected)
 				return rs = st.executeQuery(befehl);
-			
+
 			else
 				throw new IllegalArgumentException("Fehler: Nicht Vebrunden!");
 		}
@@ -69,7 +69,7 @@ public class JDBC_Connection {
 			return null;
 		}
 	}
-	
+
 	public void trennen(){
 		try{
 			if(connected == true){

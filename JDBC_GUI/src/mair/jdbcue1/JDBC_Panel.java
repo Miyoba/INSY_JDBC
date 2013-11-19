@@ -17,9 +17,10 @@ public class JDBC_Panel extends JPanel {
 	private JTextField userT = new JTextField(15);
 	private JPasswordField passT = new JPasswordField(10);
 	private JTextField befehlT = new JTextField(15);
-	private JButton verbindenB = new JButton("Verbinden"), befehlB = new JButton("Go!");
+	private JButton verbindenB = new JButton("Verbinden"), befehlB = new JButton("Go!"); 
+	private JButton	trennenB = new JButton("Trennen");
 	
-	
+	private JDBC_Connection con = new JDBC_Connection();
 	
 	private JLabel serverL = new JLabel();
 	private JLabel datenbankL = new JLabel();
@@ -29,6 +30,8 @@ public class JDBC_Panel extends JPanel {
 	
 	public JDBC_Panel(String server, String user, String pass, String datenbank){
 	
+		this.setLayout(new BorderLayout());
+		
 		JPanel panel, buttonsP;
 		panel = new JPanel(new GridLayout(10,1));
 		buttonsP  = new JPanel(new FlowLayout());
@@ -62,11 +65,11 @@ public class JDBC_Panel extends JPanel {
 		
 		buttonsP.add(verbindenB);
 		buttonsP.add(befehlB);
+		buttonsP.add(trennenB);
 		
 		
-		
-		this.add(panel);
-		this.add(buttonsP, BorderLayout.LINE_END);
+		this.add(panel, BorderLayout.NORTH);
+		this.add(buttonsP, BorderLayout.SOUTH);
 		
 	}
 	
@@ -75,10 +78,15 @@ public class JDBC_Panel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent a) {
 			if(a.getSource() == befehlB){
-				
+				con.befehlAbfrage(befehlT.getText());
 			}
+			
 			if(a.getSource() == verbindenB){
-				
+				con.connectTo(serverT.getText(), userT.getText(), String.valueOf(passT.getPassword()));
+			}
+			
+			if(a.getSource() == trennenB){
+				con.trennen();
 			}
 		}
 	}
