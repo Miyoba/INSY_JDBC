@@ -84,8 +84,6 @@ public class JDBC_Panel extends JPanel {
 	}
 	
 	
-	
-	
 	public String getServerT() {
 		return serverT.getText();
 	}
